@@ -1,5 +1,8 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
-const note = require('./notes');
+// const note = require('./notes');
 
-note();
+// note();
+
+console.log(chalk.bold.green.inverse('Success!'));
