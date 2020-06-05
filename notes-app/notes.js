@@ -1,9 +1,6 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-const getNotes = () => {
-    console.log('Your notes...');
-}
 
 const saveNote = (notes) => {
     const dataJSON = JSON.stringify(notes);
@@ -81,7 +78,6 @@ const readNote = (title) => {
 
 
 module.exports = {
-    getNotes: getNotes,
     addNote: addNote,
     removeNote: removeNote,
     listNotes: listNotes,
