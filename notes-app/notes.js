@@ -23,11 +23,9 @@ const loadNotes = () => {
 // Add note
 const addNote = (title, body) => {
     const notes = loadNotes();
-    const dublicateNotes = notes.filter((note) => {
-        return note.title === title;
-    });
+    const dublicateNotes = notes.find(note => note.title === title);
 
-    if (dublicateNotes.length === 0) {
+    if (!dublicateNotes) {
         notes.push({
             title: title,
             body: body
@@ -43,7 +41,7 @@ const addNote = (title, body) => {
 }
 
 
-
+// Remove note
 const removeNote = (title) => {
     const notes = loadNotes();
     const updatedNotes = notes.filter((note) => {
@@ -59,8 +57,33 @@ const removeNote = (title) => {
 }
 
 
+// List all Notes
+const listNotes = () => {
+    const notes = loadNotes()
+    console.log('Your Notes\n')
+    notes.forEach(note => {
+        console.log(note.title);
+    });
+}
+
+
+// Read a note
+const readNote = (title) => {
+    const notes = loadNotes();
+    const note = notes.find(note => note.title === title);
+    if (note) {
+        console.log('Title: ', note.title)
+        console.log(note.body)
+    } else {
+        console.log(chalk.bgYellow.black.bold('Note not found!'));
+    }
+}
+
+
 module.exports = {
     getNotes: getNotes,
     addNote: addNote,
-    removeNote: removeNote
+    removeNote: removeNote,
+    listNotes: listNotes,
+    readNote: readNote
 }
