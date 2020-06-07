@@ -1,20 +1,18 @@
-const apiKey = require('./api-key')
-const request = require('postman-request')
 const geocode = require('./utils/geocode')
 const forecast = require('./utils/forecast')
 
 
+const location = process.argv[2]
 
-geocode('18527 henderson ave', (err, data) => {
+geocode(location, (err, data) => {
     if (err) {
-        console.log(err)
-    } else {
-        forecast(data.lon, data.lat, (err, data) => {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log(data)
-            }
-        })
+        return console.log(err)
     }
+    forecast(data.lon, data.lat, (err, forecaseData) => {
+        if (err) {
+            return console.log(err)
+        }
+        console.log(`It is ${forecaseData.desc} with a tempreature of ${forecaseData.temp} degrees out. There is ${forecaseData.rain}% chance of rain.\n${forecaseData.loc}`)
+    })
+
 })

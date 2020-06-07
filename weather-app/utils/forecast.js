@@ -13,7 +13,8 @@ const forecast = (lon, lat, callback) => {
                 temp: res.body.current.temperature,
                 desc: res.body.current.weather_descriptions[0],
                 feels: res.body.current.feelslike,
-                rain: res.body.current.precip * 100
+                rain: res.body.current.precip * 100,
+                loc: `${res.body.location.name}, ${res.body.location.region}, ${res.body.location.country}`
             })
         }
     })
