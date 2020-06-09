@@ -5,15 +5,15 @@ const forecast = require('./utils/forecast')
 const location = process.argv[2]
 
 if (location != undefined) {
-    geocode(location, (err, data) => {
+    geocode(location, (err, { lon, lat } = {}) => {
         if (err) {
             return console.log(err)
         }
-        forecast(data.lon, data.lat, (err, forecaseData) => {
+        forecast(lon, lat, (err, { desc, temp, rain, loc } = {}) => {
             if (err) {
                 return console.log(err)
             }
-            console.log(`It is ${forecaseData.desc} with a tempreature of ${forecaseData.temp} degrees out. There is ${forecaseData.rain}% chance of rain.\n${forecaseData.loc}`)
+            console.log(`It is ${desc} with a tempreature of ${temp} degrees out. There is ${rain}% chance of rain.\n${loc}`)
         })
 
     })
