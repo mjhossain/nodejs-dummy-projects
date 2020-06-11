@@ -1,17 +1,21 @@
 const express = require('express')
+const path = require('path');
 const app = express()
 
-app.get('/', (req, res) => {
-    res.send('Hello express!')
-})
+const publicDir = path.join(__dirname, '../public')
 
-app.get('/help', (req, res) => {
-    res.send('Help Page')
-})
+app.use(express.static(publicDir))
+    // app.get('/', (req, res) => {
+    //     res.send('Hello express!')
+    // })
 
-app.get('/about', (req, res) => {
-    res.send('<h1>About Page</h1>')
-})
+// app.get('/help', (req, res) => {
+//     res.send('Help Page')
+// })
+
+// app.get('/about', (req, res) => {
+//     res.send('<h1>About Page</h1>')
+// })
 
 app.get('/weather', (req, res) => {
     res.send({
