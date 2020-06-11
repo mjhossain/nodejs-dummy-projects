@@ -4,23 +4,31 @@ const app = express()
 
 const publicDir = path.join(__dirname, '../public')
 
+app.set('view engine', 'hbs')
 app.use(express.static(publicDir))
-    // app.get('/', (req, res) => {
-    //     res.send('Hello express!')
-    // })
 
-// app.get('/help', (req, res) => {
-//     res.send('Help Page')
-// })
 
-// app.get('/about', (req, res) => {
-//     res.send('<h1>About Page</h1>')
-// })
+app.get('/', (req, res) => {
+    res.render('index', {
+        title: 'Home'
+    })
+})
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        title: 'Help'
+    })
+})
+
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About'
+    })
+})
 
 app.get('/weather', (req, res) => {
-    res.send({
-        forecast: 'Gloomy',
-        location: 'New York'
+    res.render('weather', {
+        title: 'Weather'
     })
 })
 
