@@ -1,11 +1,22 @@
 const express = require('express')
 const path = require('path');
+const hbs = require('hbs');
 const app = express()
 
-const publicDir = path.join(__dirname, '../public')
+// Paths for Express config
+const publicPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
 
+// Handebars & Views setup
 app.set('view engine', 'hbs')
-app.use(express.static(publicDir))
+app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
+
+
+// Express static setup
+app.use(express.static(publicPath))
+
 
 
 app.get('/', (req, res) => {
@@ -31,6 +42,23 @@ app.get('/weather', (req, res) => {
         title: 'Weather'
     })
 })
+
+
+
+// 404 Pages
+
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        message: 'Sorry help article not found!'
+    })
+})
+
+app.get('*', (req, res) => {
+    res.render('404', {
+        message: 'Error 404 page not found!'
+    })
+})
+
 
 app.listen(3000, () => {
     console.log('Running on port 3000')
