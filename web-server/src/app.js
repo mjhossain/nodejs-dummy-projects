@@ -1,7 +1,10 @@
-const express = require('express')
+const express = require('express');
 const path = require('path');
 const hbs = require('hbs');
-const app = express()
+const forecast = require('./utils/forecast');
+const geocode = require('./utils/geocode');
+const app = express();
+
 
 // Paths for Express config
 const publicPath = path.join(__dirname, '../public')
@@ -38,9 +41,36 @@ app.get('/about', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
-    res.render('weather', {
-        title: 'Weather'
-    })
+    if (!req.query.address) {
+        res.send({
+            message: 'Error address not provided!'
+        })
+    } else {
+        let addr = req.query.address;
+        geocode(addr, (err, { lon, lat } = {}) => {
+            if (err) {
+                res.send({
+                    error: err
+                })
+            } else {
+                forecast(lon, lat, (err, { desc, temp, rain, loc } = {}) => {
+                    if (err) {
+                        res.send({
+                            error: err
+                        })
+                    } else {
+                        res.send({
+                            forecast: desc,
+                            temperature: temp,
+                            rain,
+                            location: loc,
+                            search: req.query.address
+                        })
+                    }
+                })
+            }
+        })
+    }
 })
 
 
