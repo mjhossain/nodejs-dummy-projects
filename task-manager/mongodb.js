@@ -10,19 +10,10 @@ MongoClient.connect(connectionUrl, { useNewUrlParser: true }, (err, client) => {
 
     const db = client.db(dbName)
 
-    // Get Single Task
-    db.collection('tasks').findOne({ _id: new ObjectID("5ee969c84834b12c3eba3dfb") }, (err, task) => {
-        if (err) {
-            return console.log('Error!')
-        }
-        console.log(task)
-    })
-
-    db.collection('tasks').find({ completed: false }).toArray((err, task) => {
-        if (err) {
-            return console.log('Error!')
-        }
-        console.log(task)
-    })
+    db.collection('tasks').deleteOne({
+        description: "Read a book"
+    }).then((res) => {
+        console.log(res.deletedCount)
+    }).catch(err => console.log(err))
 
 })
