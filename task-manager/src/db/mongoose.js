@@ -28,11 +28,16 @@ const User = mongoose.model('User', {
         type: Number,
         default: 0,
     },
-    gender: {
+    password: {
         type: String,
+        required: true,
+        minlength: 7,
         trim: true,
-        lowercase: true,
-        default: 'Unassigned'
+        validate(value) {
+            if (value.includes('password')) {
+                throw new Error('Can\'t contain the word password')
+            }
+        }
     }
 })
 
@@ -62,7 +67,7 @@ const user1 = new User({
     name: 'Zakir    ',
     email: '       moham@gmail.com   ',
     age: 23,
-    gender: 'Male'
+    password: 'OkayBoss'
 })
 
 
