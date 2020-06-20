@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true,
         trim: true,
         lowercase: true,
@@ -36,6 +37,9 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+userSchema.statics.findByCredentials = async(email, password) => {
+    const user = User.findOne()
+}
 
 userSchema.pre('save', async function(next) {
     if (this.isModified('password')) {
