@@ -55,7 +55,16 @@ router.patch('/users/:id', async(req, res) => {
 
     // Updates if right set of fileds given
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        // const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        const user = await User.findById(req.params.id)
+
+        // Perform updates
+        updates.forEach((update) => {
+            user[update] = req.body[update]
+        })
+
+        // Saving user
+        await user.save()
 
         if (!user) {
             return res.status(404).send('User not found!')
