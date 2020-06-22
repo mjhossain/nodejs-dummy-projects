@@ -14,13 +14,13 @@ const { urlencoded } = require('express')
 const app = express()
 
 // Declaring Port
-const port = process.env.PORT || 3003
+const port = process.env.PORT || 3000
 
 
 // React setup
-app.use(cors({
-    origin: 'http://localhost:3000'
-}))
+// app.use(cors({
+//     origin: 'http://localhost:3000'
+// }))
 
 // Using express parser
 app.use(express.json())
