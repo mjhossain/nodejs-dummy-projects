@@ -28,9 +28,9 @@ app.use(express.urlencoded({ extended: false }))
 
 
 // Middlewares
-app.use((req, res, next) => {
-    res.status(503).send('Maintainance Mode ON!')
-})
+// app.use((req, res, next) => {
+//     res.status(503).send('Maintainance Mode ON!')
+// })
 
 
 

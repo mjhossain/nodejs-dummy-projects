@@ -1,6 +1,6 @@
 const express = require('express')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
+const auth = require('../middleware/auth')
 
 const router = express.Router()
 
@@ -18,14 +18,8 @@ router.post('/users', async(req, res) => {
 })
 
 // Getting all Users
-router.get('/users', async(req, res) => {
-
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (e) {
-        res.status(500).send(e)
-    }
+router.get('/users/me', auth, async(req, res) => {
+    res.send(req.user)
 })
 
 // Get a user by ID
@@ -102,6 +96,34 @@ router.post('/users/login', async(req, res) => {
         res.send({ user, token })
     } catch (e) {
         res.status(400).send(e)
+    }
+})
+
+
+// User logout
+router.post('/users/logout', auth, async(req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+        await req.user.save()
+
+        res.send('Logout Success!')
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
+// Logout All Sessions
+router.post('/users/logoutAll', auth, async(req, res) => {
+    try {
+        req.user.tokens = []
+        await req.user.save()
+
+        res.send('Logout All Session Success!')
+    } catch (e) {
+        res.status(500).send()
     }
 })
 
