@@ -26,6 +26,14 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+
+// Middlewares
+app.use((req, res, next) => {
+    res.status(503).send('Maintainance Mode ON!')
+})
+
+
+
 // Setting up Routers
 app.use(userRouter)
 app.use(taskRouter)
