@@ -34,6 +34,9 @@ app.use(express.urlencoded({ extended: false }))
 
 
 
+
+
+
 // Setting up Routers
 app.use(userRouter)
 app.use(taskRouter)
@@ -44,3 +47,17 @@ app.use(testRouter)
 app.listen(port, () => {
     console.log('Server running!')
 })
+
+
+// Test Scripts
+
+// const User = require('./models/user')
+// const Task = require('./models/task')
+
+// const main = async() => {
+//     const user = await User.findById("5ef2cf6e086d5d19d53c54a0")
+//     await user.populate("tasks").execPopulate()
+//     console.log(user.tasks)
+// }
+
+// main()
