@@ -1,7 +1,7 @@
 const express = require('express')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
-
+const multer = require('multer')
 const router = express.Router()
 
 // Creating a User
@@ -22,20 +22,6 @@ router.get('/users/me', auth, async(req, res) => {
     res.send(req.user)
 })
 
-// Get a user by ID
-// router.get('/users/:id', async(req, res) => {
-//     const _id = req.params.id
-
-//     try {
-//         const user = await User.findById(_id)
-//         if (!user) {
-//             return res.status(404).send()
-//         }
-//         res.send(user)
-//     } catch (e) {
-//         res.status(500).send(e)
-//     }
-// })
 
 // Update User 
 router.patch('/users/me', auth, async(req, res) => {
@@ -113,5 +99,29 @@ router.post('/users/logoutAll', auth, async(req, res) => {
         res.status(500).send()
     }
 })
+
+
+// Uploading images
+
+// Multer Setting
+const upload = multer({
+    dest: 'avatars',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please upload an image file of the following extensions. (jpg, jpeg, or png)'))
+        }
+        cb(undefined, true)
+    }
+})
+
+router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
+    res.send()
+})
+
+
+
 
 module.exports = router
