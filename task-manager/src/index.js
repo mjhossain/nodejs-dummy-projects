@@ -14,7 +14,7 @@ const { urlencoded } = require('express')
 const app = express()
 
 // Declaring Port
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 
 // React setup
