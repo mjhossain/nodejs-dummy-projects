@@ -3,13 +3,28 @@ const apiKey = 'SG.ryPwiJtXTN67ZdKdBLapgg.HrFbnopDT716Jba5nwLZ6ABON4_DQTbyZFtXfZ
 
 sgMail.setApiKey(apiKey)
 
-sgMail.send({
-    to: 'mjhossainnyc@gmail.com',
-    from: 'dev.mjhossain@gmail.com',
-    subject: 'Sending a test email',
-    text: 'This is a test email!.'
-}).then(() => {
-    console.log('Email Sent')
-}).catch((e) => {
-    console.log(e)
-})
+
+const welcomeMail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'dev.mjhossain@gmail.com',
+        subject: 'Welcome to my API!',
+        text: `Hi ${name}, hope you enjoy the services provided by this API!`
+    })
+}
+
+
+const exitMail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'dev.mjhossain@gmail.com',
+        subject: 'Hope you enjoyed our Service!',
+        text: `Hi ${name}, hope you enjoyed the services provided by this API!`
+    })
+}
+
+
+module.exports = {
+    welcomeMail,
+    exitMail
+}
