@@ -1,25 +1,9 @@
 const request = require('supertest')
 const app = require('../src/app')
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
+const { userOneID, userOne, initiateDB } = require('./db')
 const User = require('../src/models/user')
 
-
-const userOneID = mongoose.Types.ObjectId()
-const userOne = {
-    _id: userOneID,
-    name: 'Chandler',
-    email: 'bing@example.com',
-    password: 'Monica!',
-    tokens: [{
-        token: jwt.sign({ _id: userOneID }, process.env.JWT_SECRET)
-    }]
-}
-
-beforeEach(async() => {
-    await User.deleteMany()
-    await new User(userOne).save()
-})
+beforeEach(initiateDB)
 
 
 test('User Creation', async() => {
@@ -74,9 +58,40 @@ test('Delete user account', async() => {
     expect(user).toBeNull()
 })
 
-test('Delete user account SHOULD FAIL', async() => {
+test('Delete user account SHOULD FAIL!', async() => {
     await request(app)
         .delete('/users/me')
         .send()
         .expect(401)
+})
+
+test('Image upload test', async() => {
+    await request(app)
+        .post('/users/me/avatar')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .attach('avatar', 'tests/fixtures/profile-pic.jpg')
+        .expect(200)
+
+    const user = await User.findById(userOneID)
+    expect(user.avatar).toEqual(expect.any(Buffer))
+})
+
+test('User update test', async() => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({
+            name: 'Ross'
+        })
+        .expect(200)
+})
+
+test('User update test SHOULD FAIL!', async() => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({
+            address: 'Central Perk'
+        })
+        .expect(400)
 })
