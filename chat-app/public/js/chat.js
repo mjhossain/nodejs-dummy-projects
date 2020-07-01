@@ -6,8 +6,12 @@ const form = document.querySelector('#chat-form')
 const locBtn = document.querySelector('#loc')
 const msgBox = document.querySelector('#messages')
 
+// Templates
 const msgTemplate = document.querySelector('#message-template').innerHTML
 const mapTemplate = document.querySelector('#map-template').innerHTML
+
+// Options
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -31,7 +35,8 @@ socket.on('message', (msg) => {
 socket.on('locationMessage', (loc) => {
     console.log(loc)
     const html = Mustache.render(mapTemplate, {
-        loc
+        url: loc.url,
+        createdAt: moment(loc.createdAt).format('h:mm a')
     })
     msgBox.insertAdjacentHTML('beforeend', html)
 })
@@ -52,3 +57,7 @@ locBtn.addEventListener('click', () => {
         })
     })
 })
+
+
+
+socket.emit('join', { username, room })
