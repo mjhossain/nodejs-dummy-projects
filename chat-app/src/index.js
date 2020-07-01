@@ -2,6 +2,8 @@ const express = require('express')
 const http = require('http')
 const path = require('path')
 const socketio = require('socket.io')
+const { generateMessage } = require('./utils/messages')
+
 
 const app = express()
 const server = http.createServer(app)
@@ -18,19 +20,20 @@ app.use(express.static(publicDir))
 io.on('connection', (socket) => {
     console.log('New connection added!')
 
-    socket.emit('message', 'Welcome!')
-    socket.broadcast.emit('message', 'A new user has joined!')
+    socket.emit('message', generateMessage('Welcome!'))
+    socket.broadcast.emit('message', generateMessage('A new user has joined!'))
 
     socket.on('sendMessage', (msg) => {
-        io.emit('message', msg)
+        io.emit('message', generateMessage(msg))
     })
 
-    socket.on('sendLocation', ({ lat, lon }) => {
-        socket.broadcast.emit('message', `https://google.com/maps?q${lat},${lon}`)
+    socket.on('sendLocation', ({ lat, lon }, callback) => {
+        io.emit('locationMessage', `https://google.com/maps?q${lat},${lon}`)
+        callback()
     })
 
     socket.on('disconnect', () => {
-        io.emit('message', 'A user has left!')
+        io.emit('message', generateMessage('A user has left!'))
     })
 
 
