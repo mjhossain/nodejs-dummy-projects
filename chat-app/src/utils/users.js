@@ -48,26 +48,9 @@ const getUsersInRoom = (room) => {
 }
 
 
-addUser({
-    id: 1,
-    username: 'mike',
-    room: 'east'
-})
-
-addUser({
-    id: 2,
-    username: 'john',
-    room: 'east'
-})
-
-addUser({
-    id: 3,
-    username: 'john',
-    room: 'west'
-})
-
-// const user = getUser(3)
-// console.log(user)
-
-const east = getUsersInRoom('east')
-console.log(east)
+module.exports = {
+    addUser,
+    removeUser,
+    getUser,
+    getUsersInRoom
+}
